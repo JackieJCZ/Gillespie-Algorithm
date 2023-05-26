@@ -5,24 +5,64 @@ import matplotlib.pyplot as plt
 from timeit import default_timer as timer
 
 # ****************************
-# Stochiometric Input
+# Input
 # ****************************
-stoch_subst = np.array([[1, 0, 0],
-                        [0, 1, 0],
-                        [0, 1, 0],
-                        [0, 0, 1]])
-stoch_prods = np.array([[1, 1, 0],
-                        [0, 1, 1],
-                        [0, 0, 0],
-                        [0, 0, 0]])
-rates = np.array([0.01, 0.1, 0.0001, 0.0001])
-X0 = np.array([1, 0, 0])
-t_max = 10000
+# Degradation of Biomolecule:
+DB_stoch_subst = np.array([[2, 0, 0, 0]])
+DB_stoch_prods = np.array([[0, 1, 3, 2]])
+DB_rates = np.array([0.1])
+DB_X0 = np.array([1000, 0, 0, 0])
+DB_t_max = 1
+# ****************************
+# Birth - Death Process:
+BD_stoch_subst = np.array([[1, 0],
+                           [0, 1],
+                           [0, 1]])
+BD_stoch_prods = np.array([[0, 1],
+                           [1, 0],
+                           [0, 0]])
+BD_rates = np.array([0.5, 0.5, 0.01])
+BD_X0 = np.array([1000, 20])
+BD_t_max = 10
+# ****************************
+# Protein Complex Formation:
+PCF_stoch_subst = np.array([[]])
+PCF_stoch_prods = np.array([[]])
+PCF_rates = np.array([])
+PCF_X0 = np.array([])
+PCF_t_max = 10000
+# ****************************
+# Ligand-Mediated Dimerization
+LMD_stoch_subst = np.array([[]])
+LMD_stoch_prods = np.array([[]])
+LMD_rates = np.array([])
+LMD_X0 = np.array([])
+LMD_t_max = 10000
+# ****************************
+# Gene Expression:
+GE_stoch_subst = np.array([[]])
+GE_stoch_prods = np.array([[]])
+GE_rates = np.array([])
+GE_X0 = np.array([])
+GE_t_max = 10000
 # ****************************
 
+# IGNORE #
+def new_bin(i, j):
+    if np.any(i <= 0):
+        return 0
+    else:
+        return binom(i, j)
 
-def propensity_calc(X, M, N):
-    a = np.ones(M)
+
+def propensity_calc_2(X, M, N):
+    a = np.zeros(M)
+    return a
+# IGNORE #
+
+
+def propensity_calc(X, M, N, stoch_subst, rates):
+    a = np.zeros(M)
     for i in range(M):
         h_i = 1
         for j in range(N):
@@ -65,7 +105,11 @@ def gillespie(X0, rates, stoch_subst, stoch_prods, t_max, r_max=1000000):
 
     while t[-1] <= t_max:
         current_species = X[r_num]
-        a, a0 = propensity_calc(current_species, M, N)
+        a, a0 = propensity_calc(current_species,
+                                M,
+                                N,
+                                stoch_subst,
+                                rates)
         τ, r = find_τ_r(a, a0)
 
         t += [t[-1] + τ]
@@ -86,4 +130,8 @@ def gillespie(X0, rates, stoch_subst, stoch_prods, t_max, r_max=1000000):
     plt.show()
 
 
-gillespie(X0, rates, stoch_subst, stoch_prods, t_max)
+gillespie(DB_X0, DB_rates, DB_stoch_subst, DB_stoch_prods, DB_t_max)
+gillespie(BD_X0, BD_rates, BD_stoch_subst, BD_stoch_prods, BD_t_max)
+# gillespie(PCF_X0, PCF_rates, PCF_stoch_subst, PCF_stoch_prods, PCF_t_max)
+# gillespie(LMD_X0, LMD_rates, LMD_stoch_subst, LMD_stoch_prods, LMD_t_max)
+# gillespie(GE_X0, GE_rates, GE_stoch_subst, GE_stoch_prods, GE_t_max)
