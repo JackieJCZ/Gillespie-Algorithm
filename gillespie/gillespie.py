@@ -1,53 +1,9 @@
 # import modules and libraries
 import numpy as np
 from scipy.special import binom, factorial
-import matplotlib.pyplot as plt
 from timeit import default_timer as timer
 
-# ****************************
-# Input
-# ****************************
-# Degradation of Biomolecule:
-DB_stoch_subst = np.array([[2, 0, 0, 0]])
-DB_stoch_prods = np.array([[0, 1, 3, 2]])
-DB_rates = np.array([0.1])
-DB_X0 = np.array([1000, 0, 0, 0])
-DB_t_max = 1
-# ****************************
-# Birth - Death Process:
-BD_stoch_subst = np.array([[1, 0],
-                           [0, 1],
-                           [0, 1]])
-BD_stoch_prods = np.array([[0, 1],
-                           [1, 0],
-                           [0, 0]])
-BD_rates = np.array([0.5, 0.5, 0.01])
-BD_X0 = np.array([1000, 20])
-BD_t_max = 10
-# ****************************
-# Protein Complex Formation:
-PCF_stoch_subst = np.array([[]])
-PCF_stoch_prods = np.array([[]])
-PCF_rates = np.array([])
-PCF_X0 = np.array([])
-PCF_t_max = 10000
-# ****************************
-# Ligand-Mediated Dimerization
-LMD_stoch_subst = np.array([[]])
-LMD_stoch_prods = np.array([[]])
-LMD_rates = np.array([])
-LMD_X0 = np.array([])
-LMD_t_max = 10000
-# ****************************
-# Gene Expression:
-GE_stoch_subst = np.array([[]])
-GE_stoch_prods = np.array([[]])
-GE_rates = np.array([])
-GE_X0 = np.array([])
-GE_t_max = 10000
-# ****************************
 
-# IGNORE #
 def new_bin(i, j):
     if np.any(i <= 0):
         return 0
@@ -91,7 +47,8 @@ def find_τ_r(a, a0):
     return τ, µ
 
 
-def gillespie(X0, rates, stoch_subst, stoch_prods, t_max, r_max=1000000):
+def gillespie(X0, rates, stoch_subst, stoch_prods,
+              t_max, r_max=1000000):
 
     start = timer()
 
@@ -119,19 +76,4 @@ def gillespie(X0, rates, stoch_subst, stoch_prods, t_max, r_max=1000000):
     X = X[:r_num]
     t = np.array(t)[:r_num]
 
-    print(
-        f"Elapsed time: {timer() - start}ms"
-        )
-
-    fig, ax = plt.subplots()
-    for i in range(N):
-        ax.plot(t, X[:, i], '-*', label='X' + str(i))
-    ax.legend(loc='best', shadow=True)
-    plt.show()
-
-
-gillespie(DB_X0, DB_rates, DB_stoch_subst, DB_stoch_prods, DB_t_max)
-gillespie(BD_X0, BD_rates, BD_stoch_subst, BD_stoch_prods, BD_t_max)
-# gillespie(PCF_X0, PCF_rates, PCF_stoch_subst, PCF_stoch_prods, PCF_t_max)
-# gillespie(LMD_X0, LMD_rates, LMD_stoch_subst, LMD_stoch_prods, LMD_t_max)
-# gillespie(GE_X0, GE_rates, GE_stoch_subst, GE_stoch_prods, GE_t_max)
+    return timer() - start, X, t
