@@ -1,6 +1,6 @@
 import numpy as np
 
-N = 310
+N = 400
 
 
 def p_m(rates):
@@ -21,7 +21,8 @@ def p_n(rates, m_val):
 
 def p_mn(rates, start_n, end_n, start_m, end_m):
     p_mn = np.zeros((N, N))
+    p_m_realised = p_m(rates)
     for i in range(N):
-        p_mn[:, i] = p_n(rates, i) * p_m(rates)[i]
+        p_mn[:, i] = p_n(rates, i) * p_m_realised[i]
     p_mn = p_mn[start_n:end_n + 1, start_m:end_m + 1]
     return p_mn
