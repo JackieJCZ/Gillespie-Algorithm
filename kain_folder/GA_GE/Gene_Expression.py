@@ -14,7 +14,7 @@ init = np.array([100, 1, 0])
 tmax = 30
 nrmax = 100
 # Iterate for a given times for comparison with expected values
-iter = 10
+iter = 10000
 stored_val = np.zeros((iter, 2))
 
 fig, ax = plt.subplots(1, 2,
