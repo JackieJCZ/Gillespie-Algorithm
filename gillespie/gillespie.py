@@ -47,11 +47,6 @@ def find_τ_r(a, a0):
     return τ, µ
 
 
-def stationary_point(X, num=100):
-    return np.average(X[-num:],
-                      axis=0)
-
-
 def gillespie(X0, rates, stoch_subst, stoch_prods,
               t_max, r_max=1000000):
 

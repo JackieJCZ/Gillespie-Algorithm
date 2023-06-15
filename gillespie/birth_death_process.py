@@ -8,9 +8,9 @@ BD_stoch_subst = np.array([[0],
                            [1]])
 BD_stoch_prods = np.array([[1],
                            [0]])
-BD_rates = np.array([0.2, 0.01])
-BD_X0 = np.array([10])
-BD_t_max = 600
+BD_rates = np.array([0.2, 0.001])
+BD_X0 = np.array([100])
+BD_t_max = 1000
 
 λ = BD_rates[0] / BD_rates[1]
 
@@ -44,15 +44,15 @@ def call_base_gillespie():
     fig, ax = plt.subplots()
     if selected is None:
         for i in range(len(BD_X0)):
-            ax.plot(t, X[:, i], '-*', label='X' + str(i))
+            ax.step(t, X[:, i], '-*', label='X' + str(i))
     else:
         for i in selected:
-            ax.plot(t, X[:, i], '-*', label='X' + str(i))
+            ax.step(t, X[:, i], '-*', label='X' + str(i))
     ax.legend(loc='best', shadow=True)
     plt.show()
 
 
-# call_base_gillespie()
+call_base_gillespie()
 
 
 # # Stationary distribution of the base algorithm
@@ -118,4 +118,4 @@ def call_imshow():
     fig.colorbar(im, ax=axes.ravel().tolist())
 
 
-call_imshow()
+# call_imshow()
