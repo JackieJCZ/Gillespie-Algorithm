@@ -51,7 +51,7 @@ ax.vlines(np.array([i for i in range(n + 1)]),
           lw=1,
           alpha=0.5)
 
-iters = 100000
+iters = 100
 end_vals = []
 for i in range(iters):
     e, X, t = gillespie(LMD_X0,

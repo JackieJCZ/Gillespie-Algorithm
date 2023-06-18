@@ -184,7 +184,18 @@ phi_n_simulated = population_counts / len(recorded_population_sizes)
 
 plt.figure(figsize=(10, 6))
 plt.plot(n_values, phi_values / phi_sum, 'r-', label='master equation')
-plt.bar(np.arange(max_population + 1), phi_n_simulated, alpha=0.5, label='Gillespie Simulation')
+plt.hist(recorded_population_sizes, bins=np.arange(max_population + 2)-0.5,
+         density=True,
+         ec=(0, 0, 0, 0.5),
+         fc=(0, 0, 0, 0),
+         label='Simulated\n distribution')
+
+plt.hist(recorded_population_sizes, bins=np.arange(max_population + 2)-0.5,
+         density=True,
+         histtype='step',
+         ec=(0, 0, 0, 1),
+         label='Simulated\n distribution')
+# plt.bar(np.arange(max_population + 1), phi_n_simulated, alpha=0.5, label='Gillespie Simulation')
 
 #adding the dashed vertical line at x=8
 x_coord = np.where(n_values == 8)[0][0]
